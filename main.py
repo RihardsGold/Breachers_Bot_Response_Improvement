@@ -11,7 +11,7 @@ import spacy
 import re
 import warnings
 
-#Supress Userwarning W008
+#Supress Userwarning W007
 warnings.filterwarnings("ignore", message=r"\[W007\]", category=UserWarning)
 
 #Spacyyyy
@@ -29,24 +29,26 @@ client = discord.Client(intents=intents)
 
 @client.event
 async def on_message(message):
-        # Ignore messages from the bot itself
     if message.author == client.user:
         return
-    doc = nlp(message.content)
-    
-    bot_response1 = nlp(u"How do I download?")
+    doc = nlp(message.content.lower())
+    bot_response1 = nlp(u"how do i download?")
+    bot_response2 = nlp(u"w bot")
+    black_screen = nlp(u"black screen")
     statement = doc
-    min_similarity = 0.4
+    min_similarity = 0.5
     print(f"-------- {doc}")
     print(bot_response1.similarity(statement))
     if bot_response1.similarity(statement) >= min_similarity:
-        # Split the message into words using a regular expression
         words = re.findall(r'\b[a-zA-Z]+\b', message.content)
-        breachers = nlp(u"Breachers")
-        bugjaeger = nlp(u"Bugjaeger")
-        game = nlp(u"Game")
-        download = nlp("Download")
-        min_similarity1 = 0.557
+        breachers = nlp(u"breachers")
+        bugjaeger = nlp(u"bugjaeger")
+        game = nlp(u"game")
+        download = nlp("download")
+        play = nlp("play")
+        join = nlp("join")
+        alpha = nlp("alpha")
+        min_similarity1 = 0.7
         for word in words:
             token = nlp(word)
             print(f"{token} similarity with {breachers} is: {token.similarity(breachers)}")
@@ -65,4 +67,15 @@ async def on_message(message):
             elif token.similarity(download) >= min_similarity1:
                 await message.channel.send(response_1)
                 break
+            elif token.similarity(play) >= min_similarity1:
+                await message.channel.send(response_1)
+                break
+            elif token.similarity(join) >= min_similarity1:
+                await message.channel.send(response_1)
+                break
+            elif token.similarity(alpha) >= min_similarity1:
+                await message.channel.send(response_1)
+                break
+    if bot_response2.similarity(statement) >= min_similarity:
+        await message.channel.send("Thanks.")
 client.run('TOKEN')
