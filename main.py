@@ -76,11 +76,11 @@ async def on_message(message):
             filtered_words = [word for word in words if word not in words_to_remove]
             for word in filtered_words:
                 token = nlp(word)
-                print(f"{token} similarity with {bugjaeger} is: {token.similarity(bugjaeger)}")
-                print(f"{token} similarity with {breachers} is: {token.similarity(breachers)}")
-                print(f"{token} similarity with {game} is: {token.similarity(game)}")
-                print(f"{token} similarity with {download} is: {token.similarity(download)}")
-                print(f"{token} similarity with {play} is: {token.similarity(play)}")
+                #print(f"{token} similarity with {bugjaeger} is: {token.similarity(bugjaeger)}")
+                #print(f"{token} similarity with {breachers} is: {token.similarity(breachers)}")
+                #print(f"{token} similarity with {game} is: {token.similarity(game)}")
+                #print(f"{token} similarity with {download} is: {token.similarity(download)}")
+                #print(f"{token} similarity with {play} is: {token.similarity(play)}")
                 if token.similarity(bugjaeger) >= min_similarity1:
                     await message.channel.send(response_2)
                     break
