@@ -20,9 +20,7 @@ nlp = spacy.load("en_core_web_sm")
 spacy.tokens.Token.set_extension('spell_check_result', default=None)
 
 #Responses
-response_1 = "Check <#1043126415454904413> for a step by step guide. Make sure to follow the instructions and read carefully! Make sure to install both the .apk & .obb files! If you require further assistance go to <#1013752682051280967>."
-response_2 = "Check https://github.com/TriangleFactory/Breachers/wiki/Android-Guide for a step by step guide. Make sure to follow the instructions and read carefully! If you require further assistance go to <#1013752682051280967>."
-response_3 = "Check if you have the `.obb` file inside of `Android/obb/com.TriangleFactory.Breachers`, if you have: do *up to* 6 headset restarts. Check if the game boots between each restart."
+
 #Blacklisted words so the bot doesn't trigger.
 blacklist = ["up to", "someone", "installed", "breach"]
 words_to_remove = ["get", "how", "to", "good"]
@@ -39,6 +37,11 @@ client = discord.Client(intents=intents)
 #Bot itself :)
 @client.event
 async def on_message(message):
+    #Responses
+    response_1 = f"{message.author.mention} Check <#1043126415454904413> for a step by step guide. Make sure to follow the instructions and read carefully! Make sure to install both the .apk & .obb files! If you require further assistance go to <#1013752682051280967>."
+    response_2 = f"@{message.author.mention} Check https://github.com/TriangleFactory/Breachers/wiki/Android-Guide for a step by step guide. Make sure to follow the instructions and read carefully! If you require further assistance go to <#1013752682051280967>."
+    response_3 = f"@{message.author.mention} Check if you have the `.obb` file inside of `Android/obb/com.TriangleFactory.Breachers`, if you have: do *up to* 6 headset restarts. Check if the game boots between each restart."
+    response_4 = f"@{message.author.mention} The game will release in 2023. Exact date:` Unknown.`"
     if message.author == client.user:
         return
     
@@ -60,6 +63,8 @@ async def on_message(message):
         return
     elif "black screen" in message.content.lower():
         await message.channel.send(response_3)
+    elif "release" in message.content.lower():
+        await message.channel.send(response_4)
     elif bot_response2.similarity(statement) >= 0.752:
         await message.channel.send("Thanks.")
     else:
@@ -74,34 +79,37 @@ async def on_message(message):
             alpha = nlp("alpha")
             min_similarity1 = 0.752
             filtered_words = [word for word in words if word not in words_to_remove]
-            for word in filtered_words:
-                token = nlp(word)
-                #print(f"{token} similarity with {bugjaeger} is: {token.similarity(bugjaeger)}")
-                #print(f"{token} similarity with {breachers} is: {token.similarity(breachers)}")
-                #print(f"{token} similarity with {game} is: {token.similarity(game)}")
-                #print(f"{token} similarity with {download} is: {token.similarity(download)}")
-                #print(f"{token} similarity with {play} is: {token.similarity(play)}")
-                if token.similarity(bugjaeger) >= min_similarity1:
-                    await message.channel.send(response_2)
-                    break
-                elif token.similarity(breachers) >= min_similarity1:
-                    await message.channel.send(response_1)
-                    break
-                elif token.similarity(game) >= min_similarity1:
-                    await message.channel.send(response_1)
-                    break
-                elif token.similarity(download) >= min_similarity1:
-                    await message.channel.send(response_1)
-                    break
-                elif token.similarity(play) >= min_similarity1:
-                    await message.channel.send(response_1)
-                    break
-                elif token.similarity(alpha) >= min_similarity1:
-                    await message.channel.send(response_1)
-                    break
-                elif token.similarity(join) >= min_similarity1:
-                    await message.channel.send(response_1)
-                    break
+            if len(filtered_words) <= 9:
+                for word in filtered_words:
+                    token = nlp(word)
+                    #print(f"{token} similarity with {bugjaeger} is: {token.similarity(bugjaeger)}")
+                    #print(f"{token} similarity with {breachers} is: {token.similarity(breachers)}")
+                    #print(f"{token} similarity with {game} is: {token.similarity(game)}")
+                    #print(f"{token} similarity with {download} is: {token.similarity(download)}")
+                    #print(f"{token} similarity with {play} is: {token.similarity(play)}")
+                    if token.similarity(bugjaeger) >= min_similarity1:
+                        await message.channel.send(response_2)
+                        break
+                    elif token.similarity(breachers) >= min_similarity1:
+                        await message.channel.send(response_1)
+                        break
+                    elif token.similarity(game) >= min_similarity1:
+                        await message.channel.send(response_1)
+                        break
+                    elif token.similarity(download) >= min_similarity1:
+                        await message.channel.send(response_1)
+                        break
+                    elif token.similarity(play) >= min_similarity1:
+                        await message.channel.send(response_1)
+                        break
+                    elif token.similarity(alpha) >= min_similarity1:
+                        await message.channel.send(response_1)
+                        break
+                    elif token.similarity(join) >= min_similarity1:
+                        await message.channel.send(response_1)
+                        break
+            else:
+                pass
         if bot_response2.similarity(statement) >= 0.752:
             await message.channel.send("Thanks.")
 
