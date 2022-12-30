@@ -22,7 +22,7 @@ spacy.tokens.Token.set_extension('spell_check_result', default=None)
 #Responses
 
 #Blacklisted words so the bot doesn't trigger.
-blacklist = ["up to", "someone", "installed", "breach"]
+blacklist = ["up to", "someone", "installed", "breach", "breach?", "breach."]
 words_to_remove = ["get", "how", "to", "good"]
 # Tokenize the trigger phrases
 bot_response1 = nlp(u"how do i download? where can i find the game? how do I install the game? where do I download breachers? how do I get bugjaeger? where can I find the latest version? how do i update?")
@@ -59,7 +59,7 @@ async def on_message(message):
     min_similarity = 0.33
     
     # Check if either trigger phrase is similar enough to the input text.
-    if any (word in message.content.lower() for word in blacklist):
+    if any(word in message.content.lower().split() for word in blacklist):
         return
     elif "black screen" in message.content.lower():
         await message.channel.send(response_3)
@@ -82,11 +82,11 @@ async def on_message(message):
             if len(filtered_words) <= 9:
                 for word in filtered_words:
                     token = nlp(word)
-                    #print(f"{token} similarity with {bugjaeger} is: {token.similarity(bugjaeger)}")
-                    #print(f"{token} similarity with {breachers} is: {token.similarity(breachers)}")
-                    #print(f"{token} similarity with {game} is: {token.similarity(game)}")
-                    #print(f"{token} similarity with {download} is: {token.similarity(download)}")
-                    #print(f"{token} similarity with {play} is: {token.similarity(play)}")
+                    print(f"{token} similarity with {bugjaeger} is: {token.similarity(bugjaeger)}")
+                    print(f"{token} similarity with {breachers} is: {token.similarity(breachers)}")
+                    print(f"{token} similarity with {game} is: {token.similarity(game)}")
+                    print(f"{token} similarity with {download} is: {token.similarity(download)}")
+                    print(f"{token} similarity with {play} is: {token.similarity(play)}")
                     if token.similarity(bugjaeger) >= min_similarity1:
                         await message.channel.send(response_2)
                         break
@@ -112,5 +112,5 @@ async def on_message(message):
                 pass
         if bot_response2.similarity(statement) >= 0.752:
             await message.channel.send("Thanks.")
-
+ 
 client.run('TOKEN')
